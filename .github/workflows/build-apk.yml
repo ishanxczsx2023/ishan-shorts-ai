@@ -33,29 +33,30 @@ jobs:
         run: |
           gradle assembleDebug --stacktrace
           mkdir -p ../dist
-          cp app/build/outputs/apk/debug/app-debug.apk ../dist/IshanShorts-v1.0.0.apk
+          cp app/build/outputs/apk/debug/app-debug.apk ../dist/IshanShorts-v1.0.1.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: IshanShorts-v1.0.0-APK
-          path: dist/IshanShorts-v1.0.0.apk
+            name: IshanShorts-v1.0.1-APK
+            path: dist/IshanShorts-v1.0.1.apk
 
       - name: Create GitHub Release with APK
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0
-          name: Ishan AI Shorts v1.0.0 (ElevenLabs Voice & 9:16 Shorts Studio)
-          body: |
-            🚀 **Ishan AI Shorts v1.0.0 Official Android APK**
+            tag_name: v1.0.1
+            name: Ishan AI Shorts v1.0.1 (Ultra-Human Voice & 9:16 Shorts Studio)
+            body: |
+              🚀 **Ishan AI Shorts v1.0.1 Official Android APK**
             
-            ### ✨ Features:
-            - 🎙️ **ElevenLabs-Grade AI Voiceover**: Hyper-realistic human voices in English, Bengali & Hindi.
-            - 🌟 **Studio Broadcast Mastering**: Warm EQ, vocal presence, and studio compressor for punchy podcast/trailer audio.
-            - 🎬 **Automatic 9:16 Shorts & Reels Generator**: Loops ambient background visuals with ducked background music.
-            - 📝 **Word-Synced Hormozi Captions**: Vibrant high-impact glowing captions.
-            - 📱 **Fast & Offline-Ready Android App**: Built by Ishan.
-          files: dist/*.apk
+              ### ✨ What's New in v1.0.1:
+              - 🎭 **5 Ultra-Human Emotion Styles**: Thoughtful & Deep (দার্শনিক ও বিবেক), Emotional Story (আবেগঘন গল্প), Motivational (উত্তেজক), Cinematic Mystery, Natural Conversational.
+              - 🫁 **Human Breathing & Clause Pauses**: 350ms-550ms natural breath silence between thoughts. Zero robotic monotone!
+              - 🇧🇩 **Pristine Bengali & English Pronunciation**: Intelligent punctuation normalization preventing blurred or rushed syllables.
+              - 💎 **ElevenLabs Cloud Integration**: Optional direct ElevenLabs API key support.
+              - 🎙️ **Studio Vocal Mastering**: Warm chest EQ, sibilance de-esser, room ambiance & EBU R128 (-14 LUFS) broadcast loudness.
+              - 🎬 **Mathematical Subtitle Sync**: 0% drift Hormozi captions matched to spoken words.
+            files: dist/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
