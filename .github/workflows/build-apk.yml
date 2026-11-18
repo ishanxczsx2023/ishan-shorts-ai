@@ -1,0 +1,61 @@
+name: Build Ishan AI Shorts APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Build Debug APK
+        working-directory: ./android
+        run: |
+          gradle assembleDebug --stacktrace
+          mkdir -p ../dist
+          cp app/build/outputs/apk/debug/app-debug.apk ../dist/IshanShorts-v1.0.0.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: IshanShorts-v1.0.0-APK
+          path: dist/IshanShorts-v1.0.0.apk
+
+      - name: Create GitHub Release with APK
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0
+          name: Ishan AI Shorts v1.0.0 (ElevenLabs Voice & 9:16 Shorts Studio)
+          body: |
+            🚀 **Ishan AI Shorts v1.0.0 Official Android APK**
+            
+            ### ✨ Features:
+            - 🎙️ **ElevenLabs-Grade AI Voiceover**: Hyper-realistic human voices in English, Bengali & Hindi.
+            - 🌟 **Studio Broadcast Mastering**: Warm EQ, vocal presence, and studio compressor for punchy podcast/trailer audio.
+            - 🎬 **Automatic 9:16 Shorts & Reels Generator**: Loops ambient background visuals with ducked background music.
+            - 📝 **Word-Synced Hormozi Captions**: Vibrant high-impact glowing captions.
+            - 📱 **Fast & Offline-Ready Android App**: Built by Ishan.
+          files: dist/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
